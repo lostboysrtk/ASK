@@ -1,73 +1,115 @@
-# React + TypeScript + Vite
+# ASK. — AI-Powered Personal Finance Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![ASK. Banner](https://ojbzfynwckkqwxwuatag.supabase.co/storage/v1/object/public/assets/banner.png)
 
-Currently, two official plugins are available:
+> **Financial freedom, the efficient way.**  
+> ASK. is a premium, production-ready fintech dashboard designed for modern professionals and founders. It combines high-fidelity aesthetics with powerful AI-driven financial insights.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## ✨ Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 🔐 Secure Authentication
+- **Supabase Integration**: Full user lifecycle management (Sign up, Login, Logout).
+- **Protected Routes**: Secure dashboard access ensuring your financial data remains private.
 
-## Expanding the ESLint configuration
+### 🤖 AI Financial Engine
+- **Ask AI**: Natural language interface to interrogate your financial data.
+- **Smart Scoring**: Proprietary AI-calculated financial health score based on savings and spend diversity.
+- **Anomaly Detection**: Automatic detection of unusual spending spikes.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 💳 Spend & Card Management
+- **Dashboard**: High-level overview of metrics, spend charts, and recent activity.
+- **Cards Advisor**: Intelligent recommendations for top credit cards based on your actual spending habits.
+- **Expense Tracking**: Visual breakdown of categories and transactional history.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 📅 Planning & Subscriptions
+- **Budget Planner**: Proactive category limits with real-time progress tracking.
+- **Subscription Tracker**: Automatic detection of recurring payments (Netflix, Spotify, etc.).
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 💸 Payments & Billing
+- **Razorpay Integration**: Seamless "Upgrade to Pro" flow integrated directly into the profile settings.
+- **Demo Mode**: Built-in demonstration mode for testing payment flows without live credentials.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend**: React 18, Vite, TypeScript
+- **Styling**: Tailwind CSS (Custom Design System)
+- **State Management**: Zustand
+- **Animations**: Framer Motion
+- **Backend/Auth**: Supabase
+- **Payments**: Razorpay
+- **Charts**: Recharts
+- **Icons**: Lucide React
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/lostboysrtk/ASK.git
+   cd ASK
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+   Create a `.env` file in the root directory and add your credentials:
+   ```env
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   VITE_RAZORPAY_KEY_ID=your_razorpay_key_id
+   ```
+
+4. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+---
+
+## 📂 Project Structure
+
+```text
+src/
+├── components/     # Reusable UI components (GlassCard, MetricTile, etc.)
+├── data/           # Mock data and card databases
+├── lib/            # Third-party initializations (Supabase, Razorpay)
+├── pages/          
+│   ├── app/        # Dashboard, Expenses, AI Chat, etc.
+│   ├── auth/       # Login and Signup pages
+│   └── landing/    # Marketing Landing Page
+├── store/          # Zustand store for global state
+├── utils/          # AI logic, Parsers, and Score calculators
+└── types/          # TypeScript definitions
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🛡️ Privacy & Security
+ASK. is designed with a **Privacy-First** approach.
+- Transactions uploaded via CSV are processed **locally** in your browser.
+- Sensitive environment variables are managed via `.env` and are strictly ignored by Git to prevent leaks.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+
+## 📄 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+<p align="center">
+  Built with ❤️ by the ASK. Team
+</p>
