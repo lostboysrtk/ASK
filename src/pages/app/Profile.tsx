@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useFinanceStore } from '../../store/useFinanceStore';
 import { GlassCard } from '../../components/ui/GlassCard';
 import { EyebrowBadge } from '../../components/ui/EyebrowBadge';
-import { AlertTriangle, Zap, Check } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { AlertTriangle, Zap, Check, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Razorpay type declaration
 declare var Razorpay: any;
@@ -29,6 +29,7 @@ export function Profile() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [alerts, setAlerts] = useState({ anomaly: true, weekly: false, budget: true });
   const [billingLoading, setBillingLoading] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const userName = session?.user?.user_metadata?.full_name || user.name;
   const userEmail = session?.user?.email || 'hello@example.com';
@@ -43,7 +44,8 @@ export function Profile() {
     // Demo Mode: If key is missing or placeholder, simulate success
     if (!razorpayKey || razorpayKey === 'your_razorpay_key_id' || razorpayKey.startsWith('sb_publishable')) {
       setTimeout(() => {
-        alert('DEMO MODE: Payment Successful! (Simulated)');
+        updateUser({ subscription: 'pro' });
+        setShowSuccessModal(true);
         setBillingLoading(false);
       }, 1500);
       return;
@@ -57,7 +59,8 @@ export function Profile() {
       description: "Pro Plan Subscription",
       image: "https://ojbzfynwckkqwxwuatag.supabase.co/storage/v1/object/public/assets/logo.png", // Replace with your logo
       handler: function (response: any) {
-        alert(`Payment Successful! Payment ID: ${response.razorpay_payment_id}`);
+        updateUser({ subscription: 'pro' });
+        setShowSuccessModal(true);
         // Here you would typically send the response to your backend
       },
       prefill: {
@@ -129,7 +132,7 @@ export function Profile() {
             <div>
               <div className="flex items-center gap-3 mb-2">
                 <h3 className="text-display-m text-[24px]">ASK. Pro Plan</h3>
-                <span className="px-2 py-1 bg-accent text-bg text-[10px] font-bold rounded-pill uppercase">Current: Free</span>
+                <span className="px-2 py-1 bg-accent text-bg text-[10px] font-bold rounded-pill uppercase">Current: {user.subscription === 'pro' ? 'Pro' : 'Free'}</span>
               </div>
               <p className="text-body-l text-text2 max-w-md mb-6">
                 Unlock advanced AI insights, unlimited CSV uploads, and real-time bank syncing.
@@ -144,21 +147,35 @@ export function Profile() {
               </div>
             </div>
             
-            <div className="flex flex-col items-center gap-3 bg-bg/50 backdrop-blur-md p-6 rounded-card border border-border min-w-[200px]">
-               <div className="text-center">
-                 <span className="text-display-m text-accent">₹99</span>
-                 <span className="text-text3 text-body-m">/month</span>
-               </div>
-               <button 
-                 onClick={handleUpgrade}
-                 disabled={billingLoading}
-                 className="w-full py-3 bg-accent hover:bg-accent2 text-bg font-bold rounded-btn transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
-               >
-                 {billingLoading ? 'Loading...' : 'Upgrade Now'}
-                 <Zap className="w-4 h-4 fill-current" />
-               </button>
-               <p className="text-[10px] text-text3 text-center">Secure checkout via Razorpay</p>
-            </div>
+            {user.subscription !== 'pro' ? (
+              <div className="flex flex-col items-center gap-3 bg-bg/50 backdrop-blur-md p-6 rounded-card border border-border min-w-[200px]">
+                 <div className="text-center">
+                   <span className="text-display-m text-accent">₹99</span>
+                   <span className="text-text3 text-body-m">/month</span>
+                 </div>
+                 <button 
+                   onClick={handleUpgrade}
+                   disabled={billingLoading}
+                   className="w-full py-3 bg-accent hover:bg-accent2 text-bg font-bold rounded-btn transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                 >
+                   {billingLoading ? 'Loading...' : 'Upgrade Now'}
+                   <Zap className="w-4 h-4 fill-current" />
+                 </button>
+                 <p className="text-[10px] text-text3 text-center">Secure checkout via Razorpay</p>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-3 bg-bg/50 backdrop-blur-md p-6 rounded-card border border-accent/30 min-w-[200px]">
+                 <div className="text-center mb-2">
+                   <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center mx-auto mb-2 text-accent">
+                     <Check className="w-6 h-6" />
+                   </div>
+                   <span className="text-body-l font-bold text-text1">Pro Active</span>
+                 </div>
+                 <button className="w-full py-2 bg-surface2 hover:bg-surface3 text-text1 font-medium rounded-btn transition-colors">
+                   Manage Subscription
+                 </button>
+              </div>
+            )}
           </div>
         </div>
       </GlassCard>
@@ -268,6 +285,48 @@ export function Profile() {
           </div>
         </GlassCard>
       </div>
+
+      <AnimatePresence>
+        {showSuccessModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }} 
+              className="absolute inset-0 bg-bg/80 backdrop-blur-sm"
+              onClick={() => setShowSuccessModal(false)}
+            />
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="relative z-10 w-full max-w-md p-8 overflow-hidden border bg-surface border-border rounded-card"
+            >
+              <button 
+                onClick={() => setShowSuccessModal(false)}
+                className="absolute top-4 right-4 text-text3 hover:text-text1 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <div className="flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center mb-4 text-accent">
+                  <Check className="w-8 h-8" />
+                </div>
+                <h3 className="text-display-m mb-2">Payment Successful!</h3>
+                <p className="text-body-m text-text2 mb-6">
+                  You are now an ASK. Pro member. Enjoy all the premium features!
+                </p>
+                <button 
+                  onClick={() => setShowSuccessModal(false)}
+                  className="w-full py-3 bg-accent hover:bg-accent2 text-bg font-bold rounded-btn transition-colors"
+                >
+                  Continue
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

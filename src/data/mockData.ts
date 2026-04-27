@@ -3,7 +3,8 @@ import type { Transaction, User, Budget } from '../types';
 export const mockUser: User = {
   name: "Alex Chen",
   income: 8500,
-  currency: "USD"
+  currency: "USD",
+  subscription: "free"
 };
 
 export const mockBudgets: Budget[] = [

@@ -10,6 +10,7 @@ export interface User {
   name: string;
   income: number;
   currency: 'USD' | 'EUR' | 'GBP' | 'INR';
+  subscription: 'free' | 'pro';
 }
 
 export interface Budget {
